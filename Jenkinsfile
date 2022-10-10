@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE="daohungjs/jenkins-registry"
-        DOCKER_TAG = "jenkins-${JOB_NAME}-${BUILD_NUMBER}"
+        DOCKER_TAG = "${BUILD_NUMBER}"
     }
     stages {
         stage("Build") {
@@ -20,21 +20,5 @@ pipeline {
                 //sh "docker rmi nginx:1.13.9-alpine"
             }
         }
-        stage("Push") {
-            options {
-                timeout(time: 10, unit: 'MINUTES')
-            }
-            environment {
-                DOCKER_PASSWORD=Daohung''
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'registry', 
-                                                  usernameVariable: 'DOCKER_USERNAME' , 
-                                                  passwordVariable: 'DOCKER_PASSWORD')]) 
-                {
-                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                }
-                }
-            }
-        }
     }
+}
