@@ -25,14 +25,14 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES')
             }
             steps {
-                withDockerRegistry(credentialsId: 'Deploy-registry', url: 'https://index.docker.io/v1/') {
+                withCredentials([usernamePassword(credentialsId: 'Deploy-registry', 
+                                                  usernameVariable: 'DOCKER_USERNAME' , 
+                                                  passwordVariable: 'DOCKER_PASSWORD')]) 
+                {
+                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
                     sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     sh "docker push ${DOCKER_IMAGE}:latest"
                 }
-                //withCredentials([usernamePassword(credentialsId: 'Deploy-registry', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    //sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
-                    //sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                    //sh "docker push ${DOCKER_IMAGE}:latest"
                 }
             }
         }
