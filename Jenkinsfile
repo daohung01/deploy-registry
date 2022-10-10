@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE="daohungjs/jenkins-registry"
-        DOCKER_TAG = "${GIT_BRANCH.tokenize('/').pop()}-${GIT_COMMIT.substring(0,7)}"
+        DOCKER_TAG = "jenkins-${JOB_NAME}-${BUILD_NUMBER}"
     }
     stages {
         stage("Build") {
@@ -33,11 +33,8 @@ pipeline {
                                                   passwordVariable: 'DOCKER_PASSWORD')]) 
                 {
                     sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                    sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                    sh "docker push ${DOCKER_IMAGE}:latest"
                 }
                 }
             }
         }
-
     }
