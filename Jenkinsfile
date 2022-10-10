@@ -26,12 +26,16 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'Deploy-registry', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
+                    sh "cf login some.awesome.url -u $USERNAME -p $PASSWORD"
                     sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     sh "docker push ${DOCKER_IMAGE}:latest"
+                }
+                //withCredentials([usernamePassword(credentialsId: 'Deploy-registry', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    //sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
+                    //sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    //sh "docker push ${DOCKER_IMAGE}:latest"
                 }
             }
         }
 
     }
-}
