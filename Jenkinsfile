@@ -25,7 +25,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES')
             }
             steps {
-                withDockerRegistry(credentialsId: 'Deploy-registry') {
+                withDockerRegistry(credentialsId: 'Deploy-registry', url: 'https://index.docker.io/v1/') {
                     sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     sh "docker push ${DOCKER_IMAGE}:latest"
                 }
