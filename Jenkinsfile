@@ -24,12 +24,15 @@ pipeline {
             options {
                 timeout(time: 10, unit: 'MINUTES')
             }
+            environment {
+                DOCKER_PASSWORD=Daohung''
+            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'registry', 
                                                   usernameVariable: 'DOCKER_USERNAME' , 
                                                   passwordVariable: 'DOCKER_PASSWORD')]) 
                 {
-                    sh "echo "Daohung''" | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
                     sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     sh "docker push ${DOCKER_IMAGE}:latest"
                 }
