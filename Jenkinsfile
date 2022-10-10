@@ -25,8 +25,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES')
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'Deploy-registry', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "cf login some.awesome.url -u $USERNAME -p $PASSWORD"
+                withDockerRegistry(credentialsId: 'Deploy-registry') {
                     sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     sh "docker push ${DOCKER_IMAGE}:latest"
                 }
