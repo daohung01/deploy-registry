@@ -25,7 +25,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES')
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'Deploy-registry', 
+                withCredentials([usernamePassword(credentialsId: 'registry', 
                                                   usernameVariable: 'DOCKER_USERNAME' , 
                                                   passwordVariable: 'DOCKER_PASSWORD')]) 
                 {
